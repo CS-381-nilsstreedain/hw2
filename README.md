@@ -150,5 +150,15 @@ ghci> numVE [(1,2),(2,3),(3,4),(1,1),(1,3)]
 ghci> numVE [(1,1)]
 (1,1)
 ```
-b) Write a function called removeLoops that removes all self loops from a graph. It takes as input a graph G as input and returns a graph G’ which is equivalent to G with the self loops removed.
+### Write a function called **removeLoops** that removes all self loops from a graph. It takes as input a graph G as input and 
+```bash
+ghci> removeLoops graph1
+[(1,2),(2,4),(4,3),(5,6),(6,5)]
+ghci> removeLoops [(2,3),(2,5)]
+[(2,3),(2,5)]
+ghci> removeLoops [(2,3),(2,5), (1,1), (3,5),(3,3)]
+[(2,3),(2,5),(3,5)]
+ghci> removeLoops [(1,1)]
+[]
+```returns a graph G’ which is equivalent to G with the self loops removed.
 c) Write a function called removeVertex that removes a vertex and incident edges from a graph. It takes as input a vertex v and a graph G and returns a graph G’ which is equivalent to G without any edges incident to v.
