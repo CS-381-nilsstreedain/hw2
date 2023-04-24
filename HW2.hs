@@ -16,3 +16,8 @@ sizeTree (Node _ l r) = 1 + sizeTree l + sizeTree r
 height :: Tree -> Int
 height Leaf = -1
 height (Node _ l r) = 1 + max (height l) (height r)
+
+-- treeSum function
+treeSum :: Tree -> Int
+treeSum Leaf = 0
+treeSum (Node v l r) = v + treeSum l + treeSum r
