@@ -98,6 +98,19 @@ ghci> t3
 Node 5 (Node 2 Leaf (Node 4 (Node 3 Leaf Leaf) Leaf)) (Node 8 (Node 6 Leaf (Node 7 Leaf Leaf)) (Node 10 (Node 9 Leaf Leaf) Leaf))
 ```
 
+```bash
+ghci> mergeTrees tree2 tree4
+Node 6 (Node 2 (Node 1 Leaf Leaf) (Node 3 Leaf (Node 4 Leaf Leaf))) (Node 8 Leaf Leaf)
+ghci> mergeTrees tree1 tree2
+Node 5 (Node 2 Leaf (Node 3 Leaf Leaf)) (Node 6 Leaf (Node 8 Leaf Leaf))
+ghci> mergeTrees (Node 5 Leaf Leaf) (Node 5 Leaf Leaf)
+Node 5 Leaf Leaf
+ghci> mergeTrees (Node 5 Leaf Leaf) Leaf
+Node 5 Leaf Leaf
+ghci> mergeTrees Leaf Leaf
+Leaf
+```
+
 ### Write a function called *isBST* that takes a tree t as input and returns True if the tree is a binary search tree and False otherwise. If you want to review the definition of a binary search tree BST reference [this page](https://en.wikipedia.org/wiki/Binary_search_tree).
 *Note: isBST Leaf = True.*
 ```bash
