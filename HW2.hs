@@ -72,3 +72,15 @@ convertBST t = toBST (flatten t)
     
     flatten Leaf = []
     flatten (Node v l r) = flatten l ++ [v] ++ flatten r
+
+-- Problem 2: Graphs
+
+numVE :: Graph -> (Int, Int)
+numVE graph =
+  (length (nub (concatMap (\(u, v) -> [u, v]) graph)), length graph)
+
+removeLoops :: Graph -> Graph
+removeLoops = filter (\(u, v) -> u /= v)
+
+removeVertex :: Vertex -> Graph -> Graph
+removeVertex v = filter (\(u, v') -> u /= v && v' /= v)
