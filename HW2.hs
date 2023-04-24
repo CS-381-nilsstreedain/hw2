@@ -11,3 +11,8 @@ import Data.List (nub)
 sizeTree :: Tree -> Int
 sizeTree Leaf = 0
 sizeTree (Node _ l r) = 1 + sizeTree l + sizeTree r
+
+-- height function
+height :: Tree -> Int
+height Leaf = -1
+height (Node _ l r) = 1 + max (height l) (height r)
