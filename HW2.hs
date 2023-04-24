@@ -63,3 +63,12 @@ isBST t = isBST' t (minBound :: Int) (maxBound :: Int)
       v > minVal && v < maxVal &&
       isBST' left minVal v &&
       isBST' right v maxVal
+
+convertBST :: Tree -> Tree
+convertBST t = toBST (flatten t)
+  where
+    toBST [] = Leaf
+    toBST (x:xs) = Node x (toBST (filter (<x) xs)) (toBST (filter (>x) xs))
+    
+    flatten Leaf = []
+    flatten (Node v l r) = flatten l ++ [v] ++ flatten r
