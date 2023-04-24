@@ -87,7 +87,7 @@ ghci> (Node 3 Leaf (Node 5 Leaf Leaf)) == (Node 7 (Node 3 Leaf Leaf) Leaf)
 False
 ```
 
-### Write a function called *mergeTrees* that takes as input a two trees t1 and t1 and returns a tree t3 containing all of the values in t1 and t2.
+### Write a function called *mergeTrees* that takes as input a two trees t1 and t2 and returns a tree t3 containing all of the values in t1 and t2.
 ```bash
 ghci> t1
 Node 5 (Node 2 Leaf Leaf) (Node 8 (Node 6 Leaf Leaf) Leaf)
