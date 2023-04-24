@@ -44,3 +44,12 @@ instance Eq Tree where
   Leaf == Leaf = True
   (Node v1 l1 r1) == (Node v2 l2 r2) = v1 == v2 && l1 == l2 && r1 == r2
   _ == _ = False
+  
+-- Merge two binary trees without duplicates
+mergeTrees :: Tree -> Tree -> Tree
+mergeTrees Leaf t2 = t2
+mergeTrees t1 Leaf = t1
+mergeTrees t1@(Node v1 l1 r1) t2@(Node v2 l2 r2)
+    | v1 > v2   = Node v2 l2 (mergeTrees t1 r2)
+    | v1 < v2   = Node v1 l1 (mergeTrees r1 t2)
+    | otherwise = Node v1 r1 l2
