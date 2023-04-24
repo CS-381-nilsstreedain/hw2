@@ -18,13 +18,13 @@ Graphs:
 - `removeLoops`: removes loops from a graph
 - `removeVertex`: removes a given vertex from a graph
 -}
-
 module HW2 where
 import HW2types
 import Data.List (nub)
 
 -- Problem 1: Trees
 -- This section defines functions that operate on binary trees.
+
 -- sizeTree function
 -- Given a binary tree, returns the number of nodes in the tree by recursively
 -- traversing the tree and summing the nodes.
@@ -47,21 +47,22 @@ treeSum Leaf = 0
 treeSum (Node v l r) = v + treeSum l + treeSum r
 
 -- Overloading the equivalence (==) operator for Tree
+-- Checks that v, l, & r are identical in both Nodes, returns True if Leaf
 instance Eq Tree where
-  Leaf == Leaf = True
+  Leaf == Leaf = True -- Returns true if Leaf
   (Node v1 l1 r1) == (Node v2 l2 r2) = v1 == v2 && l1 == l2 && r1 == r2
-  _ == _ = False
+  _ == _ = False -- Returns false otherwise
 
 -- mergeTree function
 -- Merges two binary trees without duplicates by recursively comparing node
 -- values and adding nodes to the resulting tree
 mergeTrees :: Tree -> Tree -> Tree
-mergeTrees Leaf t2 = t2
-mergeTrees t1 Leaf = t1
+mergeTrees Leaf t2 = t2 -- base case: return second tree if first is empty
+mergeTrees t1 Leaf = t1 -- base case: return first tree if second is empty
 mergeTrees t1@(Node v1 l1 r1) t2@(Node v2 l2 r2)
-    | v1 > v2   = Node v2 l2 (mergeTrees t1 r2)
-    | v1 < v2   = Node v1 l1 (mergeTrees r1 t2)
-    | otherwise = Node v1 r1 l2
+    | v1 > v2   = Node v2 l2 (mergeTrees t1 r2) -- Keep small node, merge right
+    | v1 < v2   = Node v1 l1 (mergeTrees r1 t2) -- Keep small node, merge right
+    | otherwise = Node v1 r1 l2 -- Keep node (same), effectively merges subtree\
 
 -- isBST function
 -- Checks if a given tree is a binary search tree by recursively traversing the
@@ -69,33 +70,39 @@ mergeTrees t1@(Node v1 l1 r1) t2@(Node v2 l2 r2)
 isBST :: Tree -> Bool
 isBST t = isBST' t (minBound :: Int) (maxBound :: Int)
   where
-    isBST' :: Tree -> Int -> Int -> Bool
-    isBST' Leaf _ _ = True
+    -- isBST' function
+    -- Recursively checks if a subtree is a BST by comparing node values and
+    -- their position with respect to the given min and max values.
+    isBST' :: Tree -> Int -> Int -> Bool -- If the subtree is empty, it's valid
+    isBST' Leaf _ _ = True -- base case: empty tree is always a BST
     isBST' (Node v left right) minVal maxVal =
-      v > minVal && v < maxVal &&
-      isBST' left minVal v &&
-      isBST' right v maxVal
+      v > minVal && v < maxVal && -- ensure current node value is within bounds
+      isBST' left minVal v &&     -- check left subtree
+      isBST' right v maxVal       -- check right subtree
 
 -- convertBST function
 -- Converts a given binary tree to a binary search tree by first flattening the
 -- tree into a list and then constructing a new BST from the list.
 convertBST :: Tree -> Tree
-convertBST t = toBST (flatten t)
+convertBST t = toBST (flatten t) -- call to toBST with flattened tree list
   where
-    toBST [] = Leaf
+    -- toBST function
+    -- Builds a BST recursively by selecting values from the flattened tree list
+    toBST [] = Leaf -- base case: empty list returns empty tree
     toBST (x:xs) = Node x (toBST (filter (<x) xs)) (toBST (filter (>x) xs))
     
-    -- helper function to flatten a binary tree into a list
-    flatten Leaf = []
-    flatten (Node v l r) = flatten l ++ [v] ++ flatten r
+    -- flatten function
+    -- Flattens a binary tree into a list of node values.
+    flatten Leaf = [] -- base case: empty tree returns empty list
+    flatten (Node v l r) = flatten l ++ [v] ++ flatten r -- infix traversal
 
 -- Problem 2: Graphs
+-- This section defines functions that operate on graphs.
 
 -- Calculates the number of vertices and edges in a graph by counting the
 -- distinct vertices and the total number of edges in the graph.
 numVE :: Graph -> (Int, Int)
-numVE graph =
-  (length (nub (concatMap (\(u, v) -> [u, v]) graph)), length graph)
+numVE graph = (length (nub (concatMap (\(u, v) -> [u, v]) graph)), length graph)
 
 -- removeLoops function
 -- Removes loops from a graph by filtering out edges with identical endpoints.
