@@ -53,3 +53,13 @@ mergeTrees t1@(Node v1 l1 r1) t2@(Node v2 l2 r2)
     | v1 > v2   = Node v2 l2 (mergeTrees t1 r2)
     | v1 < v2   = Node v1 l1 (mergeTrees r1 t2)
     | otherwise = Node v1 r1 l2
+    
+isBST :: Tree -> Bool
+isBST t = isBST' t (minBound :: Int) (maxBound :: Int)
+  where
+    isBST' :: Tree -> Int -> Int -> Bool
+    isBST' Leaf _ _ = True
+    isBST' (Node v left right) minVal maxVal =
+      v > minVal && v < maxVal &&
+      isBST' left minVal v &&
+      isBST' right v maxVal
