@@ -46,12 +46,26 @@ treeSum :: Tree -> Int
 treeSum Leaf = 0
 treeSum (Node v l r) = v + treeSum l + treeSum r
 
+-- flatten function
+-- Flattens a binary tree into a list of node values.
+flatten :: Tree -> [Int]
+flatten Leaf = [] -- base case: empty tree returns empty list
+flatten (Node v l r) = flatten l ++ [v] ++ flatten r -- infix traversal
+
+-- listSort function
+-- Sorts a list using a custom implementation of insertion sort.
+listSort :: (Ord a) => [a] -> [a]
+listSort = foldr insert [] -- iteratively inserts each element into sorted list
+  where
+    insert x [] = [x] -- base case: insert x into an empty list
+    insert x (y:ys)
+      | x <= y    = x : y : ys -- if x is less or equal to y, insert x before y
+      | otherwise = y : insert x ys -- otherwise, keep y and insert x into list
+
 -- Overloading the equivalence (==) operator for Tree
--- Checks that v, l, & r are identical in both Nodes, returns True if Leaf
+-- Checks that both trees contain the same values
 instance Eq Tree where
-  Leaf == Leaf = True -- Returns true if Leaf
-  (Node v1 l1 r1) == (Node v2 l2 r2) = v1 == v2 && l1 == l2 && r1 == r2
-  _ == _ = False -- Returns false otherwise
+  t1 == t2 = (listSort . nub $ flatten t1) == (listSort . nub $ flatten t2)
 
 -- mergeTree function
 -- Merges two binary trees without duplicates by recursively comparing node
@@ -60,9 +74,9 @@ mergeTrees :: Tree -> Tree -> Tree
 mergeTrees Leaf t2 = t2 -- base case: return second tree if first is empty
 mergeTrees t1 Leaf = t1 -- base case: return first tree if second is empty
 mergeTrees t1@(Node v1 l1 r1) t2@(Node v2 l2 r2)
-    | v1 > v2   = Node v2 l2 (mergeTrees t1 r2) -- Keep small node, merge right
+    | v1 > v2   = Node v2 (mergeTrees t1 l2) r2 -- Keep small node, merge left
     | v1 < v2   = Node v1 l1 (mergeTrees r1 t2) -- Keep small node, merge right
-    | otherwise = Node v1 r1 l2 -- Keep node (same), effectively merges subtree\
+    | otherwise = Node v1 (mergeTrees l1 l2) (mergeTrees r1 r2) -- Merge when ==
 
 -- isBST function
 -- Checks if a given tree is a binary search tree by recursively traversing the
@@ -90,11 +104,6 @@ convertBST t = toBST (flatten t) -- call to toBST with flattened tree list
     -- Builds a BST recursively by selecting values from the flattened tree list
     toBST [] = Leaf -- base case: empty list returns empty tree
     toBST (x:xs) = Node x (toBST (filter (<x) xs)) (toBST (filter (>x) xs))
-    
-    -- flatten function
-    -- Flattens a binary tree into a list of node values.
-    flatten Leaf = [] -- base case: empty tree returns empty list
-    flatten (Node v l r) = flatten l ++ [v] ++ flatten r -- infix traversal
 
 -- Problem 2: Graphs
 -- This section defines functions that operate on graphs.
