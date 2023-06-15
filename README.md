@@ -1,4 +1,4 @@
-# Homework 2
+# Homework 2 - Haskell
 ## Homework format:
 - Name your file HW2.hs and include the first line:
 ```haskell
